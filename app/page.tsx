@@ -3,7 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Ban, Check, List, ListCheck, Plus, SquarePen, Trash } from "lucide-react";
+import { Ban, Check, List, ListCheck, Plus, Sigma, SquarePen, Trash } from "lucide-react";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 function Home() {
 
@@ -49,7 +62,21 @@ function Home() {
                 <p className="flex-1 px-2 text-sm">Tarefa 1</p>
 
                 <div className="flex gap-2 items-center">
-                  <SquarePen size={16} className="cursor-pointer" />
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <SquarePen size={16} className="cursor-pointer" />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Editar Tarefa</DialogTitle>
+                      </DialogHeader>
+
+                      <div className="flex gap-2">
+                        <Input placeholder="Editar tarefa" />
+                        <Button className="cursor-pointer">Editar</Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <Trash size={16} className="cursor-pointer" />
                 </div>
               </div>
@@ -61,14 +88,32 @@ function Home() {
                 <p className="text-xs">Tarefas concluídas (3/3)</p>
               </div>
 
-              <Button className="text-xs h-7 cursor-pointer" variant={'outline'}>
-                <Trash size={16} />
-                Limpar tarefas concluídas
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button className="text-xs h-7 cursor-pointer" variant={'outline'}>
+                    <Trash size={16} />
+                    Limpar tarefas concluídas
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Tem certeza que deseja excluir x itens?</AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction>Sim</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
 
             <div className="h-2 w-full bg-gray-100 mt-4 roundend-md">
               <div className="h-full bg-blue-500 roundend-md" style={{ width: "50%" }}></div>
+            </div>
+
+            <div className="flex justify-end items-center gap-2 mt-2">
+              <Sigma size={18} />
+              <p className="text-xs">3 tarefas no total</p>
             </div>
 
           </CardContent>
