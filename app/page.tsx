@@ -16,7 +16,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import EditTask from "@/components/edit.task";
+
 
 function Home() {
 
@@ -60,23 +61,8 @@ function Home() {
               <div className="h-14 flex justify-between items-center border-t">
                 <div className="w-1 h-full bg-green-300"></div>
                 <p className="flex-1 px-2 text-sm">Tarefa 1</p>
-
                 <div className="flex gap-2 items-center">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <SquarePen size={16} className="cursor-pointer" />
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Editar Tarefa</DialogTitle>
-                      </DialogHeader>
-
-                      <div className="flex gap-2">
-                        <Input placeholder="Editar tarefa" />
-                        <Button className="cursor-pointer">Editar</Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <EditTask />
                   <Trash size={16} className="cursor-pointer" />
                 </div>
               </div>
