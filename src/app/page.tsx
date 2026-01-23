@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
+import { Input } from "@/src/components/ui/input";
+import { Separator } from "@/src/components/ui/separator";
 import { Ban, Check, List, ListCheck, Plus, Sigma, SquarePen, Trash } from "lucide-react";
 
 import {
@@ -15,8 +15,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import EditTask from "@/components/edit.task";
+} from "@/src/components/ui/alert-dialog"
+import EditTask from "@/src/components/edit.task";
 
 
 function Home() {
