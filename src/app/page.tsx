@@ -1,25 +1,35 @@
+'use client';
+
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
 import { Separator } from "@/src/components/ui/separator";
-import { Ban, Check, List, ListCheck, Plus, Sigma, SquarePen, Trash } from "lucide-react";
+import { Ban, Check, List, ListCheck, Plus, Sigma, Trash } from "lucide-react";
 
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog"
 import EditTask from "@/src/components/edit.task";
+import { getTasks } from "../_actions/get-taks-from-db";
 
 
 function Home() {
+
+  // const [taskList, setTaskList] = useState([]);
+
+  const handleGetTasks = async () => {
+    // alert('Buscando tarefas no banco de dados...');
+    const tasks = await getTasks();
+    console.log('Tarefas buscadas:', tasks);
+  }
 
   return (
 
@@ -34,6 +44,12 @@ function Home() {
               Adicionar
             </Button>
           </CardHeader>
+
+          <Button
+            onClick={handleGetTasks}
+          >
+            Buscar Tarefas
+          </Button>
 
           <CardContent>
             <Separator className="mb-2" />
