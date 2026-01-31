@@ -19,17 +19,31 @@ import {
 } from "@/src/components/ui/alert-dialog"
 import EditTask from "@/src/components/edit.task";
 import { getTasks } from "../_actions/get-taks-from-db";
-
+import { useEffect, useState } from "react";
+import { Task } from "@/prisma/generated/prisma";
 
 function Home() {
 
-  // const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState<Task[]>([]);
 
   const handleGetTasks = async () => {
-    // alert('Buscando tarefas no banco de dados...');
-    const tasks = await getTasks();
-    console.log('Tarefas buscadas:', tasks);
+    try {
+      const tasks = await getTasks();
+
+      if (!tasks) return
+
+      setTaskList(tasks)
+    } catch (error) {
+      console.error('Erro ao buscar tarefas:', error);
+    }
   }
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      await handleGetTasks();
+    };
+    fetchTasks();
+  }, [])
 
   return (
 
@@ -44,12 +58,6 @@ function Home() {
               Adicionar
             </Button>
           </CardHeader>
-
-          <Button
-            onClick={handleGetTasks}
-          >
-            Buscar Tarefas
-          </Button>
 
           <CardContent>
             <Separator className="mb-2" />
@@ -74,14 +82,16 @@ function Home() {
 
             {/* Cards */}
             <div className="mt-4 border-b">
-              <div className="h-14 flex justify-between items-center border-t">
-                <div className="w-1 h-full bg-green-300"></div>
-                <p className="flex-1 px-2 text-sm">Tarefa 1</p>
-                <div className="flex gap-2 items-center">
-                  <EditTask />
-                  <Trash size={16} className="cursor-pointer" />
+              {taskList.map(task => (
+                <div className="h-14 flex justify-between items-center border-t" key={task.id}>
+                  <div className={`w-1 h-full ${task.done ? 'bg-green-300' : 'bg-red-300'}`}></div>
+                  <p className="flex-1 px-2 text-sm">{task.task}</p>
+                  <div className="flex gap-2 items-center">
+                    <EditTask />
+                    <Trash size={16} className="cursor-pointer" />
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
 
             <div className="flex justify-between mt-4">
