@@ -42,15 +42,19 @@ function Home() {
 
   const handleAddTask = async () => {
 
-    if (task.length === 0 || !task) {
-      return
+    try {
+      if (task.length === 0 || !task) {
+        return
+      }
+
+      const myNewTask = await newTask(task)
+
+      if (!myNewTask) return
+
+      await handleGetTasks()
+    } catch (error) {
+      throw error
     }
-
-    const myNewTask = await newTask(task)
-
-    if (!myNewTask) return
-
-    await handleGetTasks()
   }
 
   useEffect(() => {
