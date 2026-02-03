@@ -21,21 +21,36 @@ import EditTask from "@/src/components/edit.task";
 import { getTasks } from "../_actions/get-taks-from-db";
 import { useEffect, useState } from "react";
 import { Task } from "@/prisma/generated/prisma";
+import { newTask } from "../_actions/add-task";
 
 function Home() {
 
   const [taskList, setTaskList] = useState<Task[]>([]);
+  const [task, setTask] = useState<string>('')
 
   const handleGetTasks = async () => {
     try {
+
       const tasks = await getTasks();
-
       if (!tasks) return
-
       setTaskList(tasks)
+
     } catch (error) {
-      console.error('Erro ao buscar tarefas:', error);
+      throw error
     }
+  }
+
+  const handleAddTask = async () => {
+
+    if (task.length === 0 || !task) {
+      return
+    }
+
+    const myNewTask = await newTask(task)
+
+    if (!myNewTask) return
+
+    await handleGetTasks()
   }
 
   useEffect(() => {
@@ -52,8 +67,8 @@ function Home() {
         <Card className="w-lg">
 
           <CardHeader className="flex gap-2">
-            <Input placeholder="Adicionar tarefa" />
-            <Button variant={'default'} className="cursor-pointer">
+            <Input placeholder="Adicionar tarefa" onChange={(e) => setTask(e.target.value)} />
+            <Button variant={'default'} className="cursor-pointer" onClick={handleAddTask}>
               <Plus />
               Adicionar
             </Button>
