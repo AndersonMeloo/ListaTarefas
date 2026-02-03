@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
@@ -22,6 +21,8 @@ import { getTasks } from "../_actions/get-taks-from-db";
 import { useEffect, useState } from "react";
 import { Task } from "@/prisma/generated/prisma";
 import { newTask } from "../_actions/add-task";
+import { deleteTask } from "../_actions/delete-task";
+import { Badge } from "../components/ui/badge";
 
 function Home() {
 
@@ -52,6 +53,20 @@ function Home() {
       if (!myNewTask) return
 
       await handleGetTasks()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleDeleteTask = async (id: string) => {
+
+    try {
+
+      if (!id) return
+      const deletedTask = await deleteTask(id)
+      if (!deletedTask) return
+      await handleGetTasks()
+
     } catch (error) {
       throw error
     }
@@ -107,7 +122,7 @@ function Home() {
                   <p className="flex-1 px-2 text-sm">{task.task}</p>
                   <div className="flex gap-2 items-center">
                     <EditTask />
-                    <Trash size={16} className="cursor-pointer" />
+                    <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.id)} />
                   </div>
                 </div>
               ))}
