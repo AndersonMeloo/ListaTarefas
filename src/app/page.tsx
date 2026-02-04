@@ -77,6 +77,26 @@ function Home() {
     }
   }
 
+  const handleToogleTask = async (taskId: string) => {
+
+    const previousTask = [...taskList]
+
+    setTaskList((prev) => {
+      const updatedTaskList = prev.map(task => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            done: !task.done
+          }
+        } else {
+          return task
+        }
+      })
+      
+      return updatedTaskList
+    })
+  }
+
   useEffect(() => {
     const fetchTasks = async () => {
       await handleGetTasks();
@@ -124,10 +144,10 @@ function Home() {
               {taskList.map(task => (
                 <div className="h-14 flex justify-between items-center border-t" key={task.id}>
                   <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
-                  <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700">{task.task}</p>
+                  <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
                   <div className="flex gap-2 items-center">
                     <EditTask />
-                    <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.id)} />
+                    <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.task)} />
                   </div>
                 </div>
               ))}
