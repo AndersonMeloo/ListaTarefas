@@ -23,6 +23,7 @@ import { Task } from "@/prisma/generated/prisma";
 import { newTask } from "../_actions/add-task";
 import { deleteTask } from "../_actions/delete-task";
 import { Badge } from "../components/ui/badge";
+import { toast } from "sonner";
 
 function Home() {
 
@@ -51,8 +52,11 @@ function Home() {
       const myNewTask = await newTask(task)
 
       if (!myNewTask) return
+      setTask('')
 
+      toast.success('Activity entered syccessfully')
       await handleGetTasks()
+
     } catch (error) {
       throw error
     }
@@ -66,6 +70,7 @@ function Home() {
       const deletedTask = await deleteTask(id)
       if (!deletedTask) return
       await handleGetTasks()
+      toast.warning('Activity syccessfully deleted')
 
     } catch (error) {
       throw error
@@ -86,7 +91,7 @@ function Home() {
         <Card className="w-lg">
 
           <CardHeader className="flex gap-2">
-            <Input placeholder="Adicionar tarefa" onChange={(e) => setTask(e.target.value)} />
+            <Input placeholder="Adicionar tarefa" onChange={(e) => setTask(e.target.value)} value={task} />
             <Button variant={'default'} className="cursor-pointer" onClick={handleAddTask}>
               <Plus />
               Adicionar
@@ -118,8 +123,8 @@ function Home() {
             <div className="mt-4 border-b">
               {taskList.map(task => (
                 <div className="h-14 flex justify-between items-center border-t" key={task.id}>
-                  <div className={`w-1 h-full ${task.done ? 'bg-green-300' : 'bg-red-300'}`}></div>
-                  <p className="flex-1 px-2 text-sm">{task.task}</p>
+                  <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
+                  <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700">{task.task}</p>
                   <div className="flex gap-2 items-center">
                     <EditTask />
                     <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.id)} />
