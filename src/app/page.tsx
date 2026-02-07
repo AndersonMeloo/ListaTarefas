@@ -24,6 +24,7 @@ import { newTask } from "../_actions/add-task";
 import { deleteTask } from "../_actions/delete-task";
 import { Badge } from "../components/ui/badge";
 import { toast } from "sonner";
+import { updateTaskStatus } from "../_actions/toggle-done";
 
 function Home() {
 
@@ -80,21 +81,30 @@ function Home() {
   const handleToogleTask = async (taskId: string) => {
 
     const previousTask = [...taskList]
+    try {
 
-    setTaskList((prev) => {
-      const updatedTaskList = prev.map(task => {
-        if (task.id === taskId) {
-          return {
-            ...task,
-            done: !task.done
+      setTaskList((prev) => {
+        const updatedTaskList = prev.map(task => {
+          if (task.id === taskId) {
+            return {
+              ...task,
+              done: !task.done
+            }
+          } else {
+            return task
           }
-        } else {
-          return task
-        }
+        })
+
+        return updatedTaskList
       })
-      
-      return updatedTaskList
-    })
+
+      const getFromDb = await updateTaskStatus(taskId)
+      console.log(getFromDb)
+
+    } catch (error) {
+      setTaskList(previousTask)
+      throw error
+    }
   }
 
   useEffect(() => {
