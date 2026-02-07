@@ -156,7 +156,7 @@ function Home() {
                   <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
                   <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
                   <div className="flex gap-2 items-center">
-                    <EditTask />
+                    <EditTask task={task} />
                     <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.task)} />
                   </div>
                 </div>
