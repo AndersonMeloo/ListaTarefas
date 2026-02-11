@@ -22,16 +22,15 @@ import { useEffect, useState } from "react";
 import { Task } from "@/prisma/generated/prisma";
 import { newTask } from "../_actions/add-task";
 import { deleteTask } from "../_actions/delete-task";
-import { Badge } from "../components/ui/badge";
 import { toast } from "sonner";
 import { updateTaskStatus } from "../_actions/toggle-done";
+import Filter from "../components/filter";
 
 function Home() {
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [task, setTask] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [currentFilter, setCurrentFilter] = useState('all')
 
   const handleGetTasks = async () => {
     try {
@@ -136,36 +135,7 @@ function Home() {
           <CardContent>
             <Separator className="mb-2" />
 
-            {/* Badges */}
-            <div className="flex gap-4">
-              <Badge
-                className="cursor-pointer"
-                variant={`${currentFilter === 'all' ? 'default' : 'outline'}`}
-                onClick={() => setCurrentFilter('all')}
-              >
-                <List />
-                Todas
-              </Badge>
-
-              <Badge
-                className="cursor-pointer"
-                variant={`${currentFilter === 'pending' ? 'default' : 'outline'}`}
-                onClick={() => setCurrentFilter('pending')}
-              >
-                <Ban />
-                Não finalizadas
-              </Badge>
-
-              <Badge
-                className="cursor-pointer"
-                variant={`${currentFilter === 'completed' ? 'default' : 'outline'}`}
-                 onClick={() => setCurrentFilter('completed')}
-              >
-                <Check />
-                Concluídas
-              </Badge>
-            </div>
-
+            <Filter />
             {/* Cards */}
             <div className="mt-4 border-b">
               {taskList.map(task => (
