@@ -4,7 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
 import { Separator } from "@/src/components/ui/separator";
-import { Ban, Check, List, ListCheck, Plus, Sigma, Trash } from "lucide-react";
+import { Ban, Check, List, ListCheck, LoaderCircle, Plus, Sigma, Trash } from "lucide-react";
 
 import {
   AlertDialog,
@@ -30,6 +30,7 @@ function Home() {
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [task, setTask] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleGetTasks = async () => {
     try {
@@ -44,9 +45,11 @@ function Home() {
   }
 
   const handleAddTask = async () => {
-
+    setLoading(true)
     try {
       if (task.length === 0 || !task) {
+        toast.error('Please enter a task')
+        setLoading(false)
         return
       }
 
@@ -61,6 +64,7 @@ function Home() {
     } catch (error) {
       throw error
     }
+    setLoading(false)
   }
 
   const handleDeleteTask = async (id: string) => {
@@ -123,7 +127,7 @@ function Home() {
           <CardHeader className="flex gap-2">
             <Input placeholder="Adicionar tarefa" onChange={(e) => setTask(e.target.value)} value={task} />
             <Button variant={'default'} className="cursor-pointer" onClick={handleAddTask}>
-              <Plus />
+              {loading ? <LoaderCircle className="animate-spin" /> : <Plus />}
               Adicionar
             </Button>
           </CardHeader>
@@ -156,7 +160,7 @@ function Home() {
                   <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
                   <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
                   <div className="flex gap-2 items-center">
-                    <EditTask task={task} handleGetTasks={handleGetTasks}/>
+                    <EditTask task={task} handleGetTasks={handleGetTasks} />
                     <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.task)} />
                   </div>
                 </div>
