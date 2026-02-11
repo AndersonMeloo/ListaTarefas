@@ -31,6 +31,7 @@ function Home() {
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [task, setTask] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+  const [currentFilter, setCurrentFilter] = useState('all')
 
   const handleGetTasks = async () => {
     try {
@@ -78,7 +79,7 @@ function Home() {
       toast.warning('Activity syccessfully deleted')
 
     } catch (error) {
-      throw error 
+      throw error
     }
   }
 
@@ -137,17 +138,29 @@ function Home() {
 
             {/* Badges */}
             <div className="flex gap-4">
-              <Badge className="cursor-pointer" variant={"default"}>
+              <Badge
+                className="cursor-pointer"
+                variant={`${currentFilter === 'all' ? 'default' : 'outline'}`}
+                onClick={() => setCurrentFilter('all')}
+              >
                 <List />
                 Todas
               </Badge>
 
-              <Badge className="cursor-pointer" variant={"outline"}>
+              <Badge
+                className="cursor-pointer"
+                variant={`${currentFilter === 'pending' ? 'default' : 'outline'}`}
+                onClick={() => setCurrentFilter('pending')}
+              >
                 <Ban />
                 Não finalizadas
               </Badge>
 
-              <Badge className="cursor-pointer" variant={"outline"}>
+              <Badge
+                className="cursor-pointer"
+                variant={`${currentFilter === 'completed' ? 'default' : 'outline'}`}
+                 onClick={() => setCurrentFilter('completed')}
+              >
                 <Check />
                 Concluídas
               </Badge>
