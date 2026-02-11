@@ -78,7 +78,7 @@ function Home() {
       toast.warning('Activity syccessfully deleted')
 
     } catch (error) {
-      throw error
+      throw error 
     }
   }
 
@@ -161,7 +161,7 @@ function Home() {
                   <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
                   <div className="flex gap-2 items-center">
                     <EditTask task={task} handleGetTasks={handleGetTasks} />
-                    <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.task)} />
+                    <Trash size={16} className="cursor-pointer" onClick={() => handleDeleteTask(task.id)} />
                   </div>
                 </div>
               ))}
