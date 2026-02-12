@@ -1,14 +1,17 @@
-import { useState } from "react";
 import { Badge } from "../components/ui/badge";
 import { Ban, Check, List } from "lucide-react";
 
-const Filter = () => {
-    
-    const [currentFilter, setCurrentFilter] = useState('all')
+export type FilterType = 'all' | 'pending' | 'completed';
+
+type FilterProps = {
+    currentFilter: FilterType,
+    setCurrentFilter: React.Dispatch<React.SetStateAction<FilterType>>
+}
+
+const Filter = ({ currentFilter, setCurrentFilter }: FilterProps) => {
 
     return (
         <div>
-            {/* Badges */}
             <div className="flex gap-4">
                 <Badge
                     className="cursor-pointer"
