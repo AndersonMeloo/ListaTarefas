@@ -4,7 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
 import { Separator } from "@/src/components/ui/separator";
-import { Ban, Check, List, ListCheck, LoaderCircle, Plus, Sigma, Trash } from "lucide-react";
+import { ListCheck, LoaderCircle, Plus, Sigma, Trash } from "lucide-react";
 
 import {
   AlertDialog,
@@ -24,13 +24,15 @@ import { newTask } from "../_actions/add-task";
 import { deleteTask } from "../_actions/delete-task";
 import { toast } from "sonner";
 import { updateTaskStatus } from "../_actions/toggle-done";
-import Filter from "../components/filter";
+import Filter, { FilterType } from "../components/filter";
 
 function Home() {
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [task, setTask] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+
+  const [currentFilter, setCurrentFilter] = useState<FilterType>('all')
 
   const handleGetTasks = async () => {
     try {
@@ -135,7 +137,7 @@ function Home() {
           <CardContent>
             <Separator className="mb-2" />
 
-            <Filter />
+            <Filter currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
             {/* Cards */}
             <div className="mt-4 border-b">
               {taskList.map(task => (
