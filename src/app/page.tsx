@@ -33,7 +33,6 @@ function Home() {
   const [loading, setLoading] = useState<boolean>(false)
 
   const [currentFilter, setCurrentFilter] = useState<FilterType>('all')
-  const [fiteredTasks, setFilteredTasks] = useState<Task[]>([])
 
   const handleGetTasks = async () => {
     try {
@@ -121,21 +120,18 @@ function Home() {
     fetchTasks();
   }, [])
 
-  useEffect(() => {
+ const filteredTasks = useMemo(() => {
+  switch (currentFilter) {
+    case 'pending':
+      return taskList.filter(task => !task.done)
 
-    switch (currentFilter) {
-      case 'all':
-        setFilteredTasks(taskList)
-        break;
-      case 'pending':
-        const pedingTasks = taskList.filter(task => !task.done)
-        setFilteredTasks(pedingTasks)
-        break;
-      case 'completed':
-        const completedTasks = taskList.filter(task => task.done)
-        setFilteredTasks(completedTasks)
-    }
-  })
+    case 'completed':
+      return taskList.filter(task => task.done)
+
+    default:
+      return taskList
+  }
+}, [currentFilter, taskList])
 
   return (
 
@@ -157,7 +153,7 @@ function Home() {
             <Filter currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
             {/* Cards */}
             <div className="mt-4 border-b">
-              {fiteredTasks.map(task => (
+              {filteredTasks.map(task => (
                 <div className="h-14 flex justify-between items-center border-t" key={task.id}>
                   <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
                   <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
