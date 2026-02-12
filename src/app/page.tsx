@@ -18,7 +18,7 @@ import {
 } from "@/src/components/ui/alert-dialog"
 import EditTask from "@/src/components/edit.task";
 import { getTasks } from "../_actions/get-taks-from-db";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Task } from "@/prisma/generated/prisma";
 import { newTask } from "../_actions/add-task";
 import { deleteTask } from "../_actions/delete-task";
@@ -33,6 +33,7 @@ function Home() {
   const [loading, setLoading] = useState<boolean>(false)
 
   const [currentFilter, setCurrentFilter] = useState<FilterType>('all')
+  const [fiteredTasks, setFilteredTasks] = useState<Task[]>([])
 
   const handleGetTasks = async () => {
     try {
@@ -120,6 +121,22 @@ function Home() {
     fetchTasks();
   }, [])
 
+  useEffect(() => {
+
+    switch (currentFilter) {
+      case 'all':
+        setFilteredTasks(taskList)
+        break;
+      case 'pending':
+        const pedingTasks = taskList.filter(task => !task.done)
+        setFilteredTasks(pedingTasks)
+        break;
+      case 'completed':
+        const completedTasks = taskList.filter(task => task.done)
+        setFilteredTasks(completedTasks)
+    }
+  })
+
   return (
 
     <>
@@ -140,7 +157,7 @@ function Home() {
             <Filter currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
             {/* Cards */}
             <div className="mt-4 border-b">
-              {taskList.map(task => (
+              {fiteredTasks.map(task => (
                 <div className="h-14 flex justify-between items-center border-t" key={task.id}>
                   <div className={`${task.done ? 'w-1 h-full bg-green-400' : 'w-1 h-full bg-red-400'}`}></div>
                   <p className="flex-1 px-2 text-sm cursor-pointer hover:text-gray-700" onClick={() => handleToogleTask(task.id)}>{task.task}</p>
