@@ -25,6 +25,7 @@ import { deleteTask } from "../_actions/delete-task";
 import { toast } from "sonner";
 import { updateTaskStatus } from "../_actions/toggle-done";
 import Filter, { FilterType } from "../components/filter";
+import { deleteCompletedTasks } from "../_actions/clear-completed-tasks";
 
 function Home() {
 
@@ -113,6 +114,13 @@ function Home() {
     }
   }
 
+  const clearCompletedTask = async () => {
+    const deletedTasks = await deleteCompletedTasks()
+    if (!deletedTasks) return
+
+    setTaskList(deletedTasks)
+  }
+
   useEffect(() => {
     const fetchTasks = async () => {
       await handleGetTasks();
@@ -120,18 +128,18 @@ function Home() {
     fetchTasks();
   }, [])
 
- const filteredTasks = useMemo(() => {
-  switch (currentFilter) {
-    case 'pending':
-      return taskList.filter(task => !task.done)
+  const filteredTasks = useMemo(() => {
+    switch (currentFilter) {
+      case 'pending':
+        return taskList.filter(task => !task.done)
 
-    case 'completed':
-      return taskList.filter(task => task.done)
+      case 'completed':
+        return taskList.filter(task => task.done)
 
-    default:
-      return taskList
-  }
-}, [currentFilter, taskList])
+      default:
+        return taskList
+    }
+  }, [currentFilter, taskList])
 
   return (
 
@@ -168,7 +176,7 @@ function Home() {
             <div className="flex justify-between mt-4">
               <div className="flex gap-2 items-center">
                 <ListCheck size={18} />
-                <p className="text-xs">Tarefas concluídas (3/3)</p>
+                <p className="text-xs">Tarefas concluídas ({taskList.filter(task => task.done).length}/{taskList.length})</p>
               </div>
 
               <AlertDialog>
@@ -183,20 +191,29 @@ function Home() {
                     <AlertDialogTitle>Tem certeza que deseja excluir x itens?</AlertDialogTitle>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction>Sim</AlertDialogAction>
+                    <AlertDialogCancel className="cursor-pointer">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="cursor-pointer"
+                      onClick={clearCompletedTask}
+                    >
+                      Sim
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
             </div>
 
             <div className="h-2 w-full bg-gray-100 mt-4 roundend-md">
-              <div className="h-full bg-blue-500 roundend-md" style={{ width: "50%" }}></div>
+              <div className="h-full bg-blue-500 roundend-md" style={{
+                width:
+                  `${(taskList.filter(task => task.done).length) / taskList.length * 100}%`
+              }}
+              ></div>
             </div>
 
             <div className="flex justify-end items-center gap-2 mt-2">
               <Sigma size={18} />
-              <p className="text-xs">3 tarefas no total</p>
+              <p className="text-xs">{taskList.length} tarefas no total</p>
             </div>
 
           </CardContent>
