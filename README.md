@@ -9,7 +9,7 @@ Aplicação fullstack de lista de tarefas (To-Do List) desenvolvida com Next.js 
 - Limpar todas as tarefas concluídas
 - Contador de tarefas
 
-- 🎯 Filtros:
+### 🎯 Filtros:
 
 - Todas
 - Não finalizadas
@@ -39,3 +39,23 @@ npm install / npm i
 ```bash
 DATABASE_URL="postgresql://usuario:senha@localhost:5432/listatarefas"
 ```
+
+### Rodar as migrations
+```bash
+npx prisma migrate dev
+```
+
+### Iniciar o projeto
+```bash
+npm run dev
+```
+
+## Conceitos Aplicados
+
+- Server Actions (Next.js App Router)
+- Separação de responsabilidades
+- Organização de código por camadas
+- CRUD completo com banco relacional
+- Manipulação de estado no cliente
+- Integração ORM + Banco de Dados
+- Componentização com React
